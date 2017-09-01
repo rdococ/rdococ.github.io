@@ -1,6 +1,6 @@
 h1 {
-	font: italic small-caps bolder condensed 32px/1 "Open Sans", cursive, sans-serif;
+	font: /*italic*/ small-caps bolder condensed 32px/1 "Open Sans", cursive, sans-serif;
 }
 p {
-	font: small-caps condensed 16px/1 "Open Sans", cursive, sans-serif;
+	font: /*small-caps*/ condensed 16px/1 "Open Sans", cursive, sans-serif;
 }
