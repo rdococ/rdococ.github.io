@@ -12,7 +12,7 @@ var links = [  // Really should probably put this in a different file - or maybe
 
 var text = "";
 for (i = 0; i < links.length; i++) {
-	if ("/" + links[i].path == location.pathname) {
+	if ("/" + links[i].path == location.pathname || links[i].path == "/" && location.pathname == "index.html") {
 		text += '<li><a class="active">' + links[i].label + '</a></li>';
 	} else {
 		text += '<li><a href="' + links[i].path + '">' + links[i].label + '</a></li>';
