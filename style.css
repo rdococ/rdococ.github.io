@@ -2,7 +2,7 @@ h1 {
 	/*padding-top: 32px;*/
 	font: /*italic*/ small-caps bolder condensed 32px/1 "DejaVu Sans", cursive, sans-serif;
 }
-p {
+body {
 	font: /*small-caps*/ condensed 16px/1 "DejaVu Sans", cursive, sans-serif;
 }
 

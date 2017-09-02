@@ -3,7 +3,8 @@
 // (what order though?)
 var links = [  // Really should probably put this in a different file - or maybe generate it automatically.
 	{path:"index.html", label:"Home"},
-	{path:"#test", label:"Test"}
+	{path:"aboutme.html", label:"About Me"},
+	{path:"minetestmods.html", label:"Minetest Mods"}
 ];
 
 // A link is of the form:
