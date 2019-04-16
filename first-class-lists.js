@@ -1,4 +1,4 @@
-class Test {
+class firstClass {
 
 	constructor() {
 		this.lists = [];
@@ -37,9 +37,9 @@ class Test {
 		return index
 	}
 	
-	delList({INDEX}) {
-		this.lists[INDEX] = null;
+	delList({LIST}) {
+		this.lists[LIST] = null;
 	}
 }
 
-Scratch.extensions.register(new Test());
+Scratch.extensions.register(new firstClass());
