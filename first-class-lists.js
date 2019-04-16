@@ -167,7 +167,7 @@ class firstClass {
 	
 	getItem({INDEX, LIST}) {
 		var list = this.lists[LIST - 1];
-		if (list !== null)
+		if (list !== null) {
 			if (INDEX >= 1 && INDEX <= list.length && list[INDEX - 1] !== null) {
 				return list[INDEX - 1];
 			}
