@@ -33,6 +33,11 @@ class firstClass {
 	
 	newList() {
 		var index = this.lists.findIndex(k => k==null);
+		
+		if (index < 0) {
+			index = this.lists.length;
+		}
+		
 		this.lists[index] = [];
 		return index
 	}
