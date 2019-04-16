@@ -13,9 +13,6 @@ class Test {
       colourSecondary: '#f44336',
       colourTertiary: '#e53935',
 
-      menuIconURI: icon,
-      blockIconURI: icon,
-
       blocks: [
         {
           opcode: 'test',
