@@ -94,7 +94,22 @@ class firstClass {
 							defaultValue: "thing"
 						}
 					}
-				}
+				},
+				{
+					opcode: 'getItem',
+					blockType: Scratch.BlockType.REPORTER,
+					text: 'item [INDEX] of [LIST]',
+					arguments: {
+						INDEX: {
+							type: Scratch.ArgumentType.NUMBER,
+							defaultValue: 1
+						},
+						LIST: {
+							type: Scratch.ArgumentType.NUMBER,
+							defaultValue: 1
+						}
+					}
+				},
 			]
 		}
 	}
@@ -112,35 +127,35 @@ class firstClass {
 	
 	addItem({ITEM, LIST}) {
 		var list = this.lists[LIST - 1]
-		if (list !== nil) {
+		if (list !== null) {
 			list[list.length] = ITEM;
 		}
 	}
 	
 	delItem({INDEX, LIST}) {
 		var list = this.lists[LIST - 1];
-		if (list !== nil) {
+		if (list !== null) {
 			list.splice(INDEX - 1, 1);
 		}
 	}
 	
 	insItem({ITEM, INDEX, LIST}) {
 		var list = this.lists[LIST - 1];
-		if (list !== nil) {
+		if (list !== null) {
 			list.splice(INDEX - 1, 0, ITEM);
 		}
 	}
 	
 	repItem({INDEX, LIST, ITEM}) {
 		var list = this.lists[LIST - 1];
-		if (list !== nil) {
+		if (list !== null) {
 			list[INDEX - 1] = ITEM;
 		}
 	}
 	
 	getItem({INDEX, LIST}) {
 		var list = this.lists[LIST - 1];
-		if (list !== nil) {
+		if (list !== null) {
 			return list[INDEX - 1];
 		}
 		return "";
