@@ -1,27 +1,44 @@
 class Test {
 
 	constructor() {
-		
+		this.lists = [];
 	}
 
 	getInfo() {
 		return {
-			id: 'test',
-			name: 'Test',
+			id: 'firstClass',
+			name: 'First Class',
 
 			blocks: [
 				{
-					opcode: 'test',
+					opcode: 'newList',
 					blockType: Scratch.BlockType.REPORTER,
-					text: 'test',
+					text: 'new list',
 					arguments: {}
+				},
+				{
+					opcode: 'delList',
+					blockType: Scratch.BlockType.COMMAND,
+					text: 'delete list [LIST]',
+					arguments: {
+						LIST: {
+							type: Scratch.ArgumentType.NUMBER,
+							defaultValue: 0
+						}
+					}
 				}
 			]
 		}
 	}
 	
-	test() {
-		return "yay!"
+	newList() {
+		var index = this.lists.findIndex(k => k==null);
+		this.lists[index] = [];
+		return index
+	}
+	
+	delList({INDEX}) {
+		this.lists[INDEX] = null;
 	}
 }
 
