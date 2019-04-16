@@ -114,6 +114,8 @@ class firstClass {
 		}
 	}
 	
+	
+	
 	newList() {
 		var index = this.lists.findIndex(k => k==null);
 		
@@ -122,7 +124,11 @@ class firstClass {
 		}
 		
 		this.lists[index] = [];
-		return index + 1
+		return index + 1;
+	}
+	
+	delList({LIST}) {
+		this.lists[LIST - 1] = null;
 	}
 	
 	addItem({ITEM, LIST}) {
@@ -134,35 +140,31 @@ class firstClass {
 	
 	delItem({INDEX, LIST}) {
 		var list = this.lists[LIST - 1];
-		if (list !== null) {
+		if (list !== null && INDEX >= 1 && INDEX <= list.length) {
 			list.splice(INDEX - 1, 1);
 		}
 	}
 	
 	insItem({ITEM, INDEX, LIST}) {
 		var list = this.lists[LIST - 1];
-		if (list !== null) {
+		if (list !== null && INDEX >= 1 && INDEX <= list.length + 1) {
 			list.splice(INDEX - 1, 0, ITEM);
 		}
 	}
 	
 	repItem({INDEX, LIST, ITEM}) {
 		var list = this.lists[LIST - 1];
-		if (list !== null) {
+		if (list !== null && INDEX >= 1 && INDEX <= list.length) {
 			list[INDEX - 1] = ITEM;
 		}
 	}
 	
 	getItem({INDEX, LIST}) {
 		var list = this.lists[LIST - 1];
-		if (list !== null) {
+		if (list !== null && INDEX >= 1 && INDEX <= list.length && list[INDEX - 1] !== null) {
 			return list[INDEX - 1];
 		}
-		return "";
-	}
-	
-	delList({LIST}) {
-		this.lists[LIST - 1] = null;
+		return 0;
 	}
 }
 
