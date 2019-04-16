@@ -140,29 +140,37 @@ class firstClass {
 	
 	delItem({INDEX, LIST}) {
 		var list = this.lists[LIST - 1];
-		if (list !== null && INDEX >= 1 && INDEX <= list.length) {
-			list.splice(INDEX - 1, 1);
+		if (list !== null) {
+			if (INDEX >= 1 && INDEX <= list.length) {
+				list.splice(INDEX - 1, 1);
+			}
 		}
 	}
 	
 	insItem({ITEM, INDEX, LIST}) {
 		var list = this.lists[LIST - 1];
-		if (list !== null && INDEX >= 1 && INDEX <= list.length + 1) {
-			list.splice(INDEX - 1, 0, ITEM);
+		if (list !== null) {
+			if (INDEX >= 1 && INDEX <= list.length + 1) {
+				list.splice(INDEX - 1, 0, ITEM);
+			}
 		}
 	}
 	
 	repItem({INDEX, LIST, ITEM}) {
 		var list = this.lists[LIST - 1];
-		if (list !== null && INDEX >= 1 && INDEX <= list.length) {
-			list[INDEX - 1] = ITEM;
+		if (list !== null) {
+			if (INDEX >= 1 && INDEX <= list.length) {
+				list[INDEX - 1] = ITEM;
+			}
 		}
 	}
 	
 	getItem({INDEX, LIST}) {
 		var list = this.lists[LIST - 1];
-		if (list !== null && INDEX >= 1 && INDEX <= list.length && list[INDEX - 1] !== null) {
-			return list[INDEX - 1];
+		if (list !== null)
+			if (INDEX >= 1 && INDEX <= list.length && list[INDEX - 1] !== null) {
+				return list[INDEX - 1];
+			}
 		}
 		return 0;
 	}
