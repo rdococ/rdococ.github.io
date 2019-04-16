@@ -23,7 +23,75 @@ class firstClass {
 					arguments: {
 						LIST: {
 							type: Scratch.ArgumentType.NUMBER,
-							defaultValue: 0
+							defaultValue: 1
+						}
+					}
+				},
+				{
+					opcode: 'addItem',
+					blockType: Scratch.BlockType.COMMAND,
+					text: 'add [ITEM] to [LIST]',
+					arguments: {
+						ITEM: {
+							type: Scratch.ArgumentType.STRING,
+							defaultValue: "thing"
+						},
+						LIST: {
+							type: Scratch.ArgumentType.NUMBER,
+							defaultValue: 1
+						}
+					}
+				},
+				{
+					opcode: 'delItem',
+					blockType: Scratch.BlockType.COMMAND,
+					text: 'delete [INDEX] of [LIST]',
+					arguments: {
+						INDEX: {
+							type: Scratch.ArgumentType.NUMBER,
+							defaultValue: 1
+						},
+						LIST: {
+							type: Scratch.ArgumentType.NUMBER,
+							defaultValue: 1
+						}
+					}
+				},
+				{
+					opcode: 'insItem',
+					blockType: Scratch.BlockType.COMMAND,
+					text: 'insert [ITEM] at [INDEX] of [LIST]',
+					arguments: {
+						ITEM: {
+							type: Scratch.ArgumentType.STRING,
+							defaultValue: "thing"
+						},
+						INDEX: {
+							type: Scratch.ArgumentType.NUMBER,
+							defaultValue: 1
+						},
+						LIST: {
+							type: Scratch.ArgumentType.NUMBER,
+							defaultValue: 1
+						}
+					}
+				},
+				{
+					opcode: 'repItem',
+					blockType: Scratch.BlockType.COMMAND,
+					text: 'replace [INDEX] of [LIST] with [ITEM]',
+					arguments: {
+						INDEX: {
+							type: Scratch.ArgumentType.NUMBER,
+							defaultValue: 1
+						},
+						LIST: {
+							type: Scratch.ArgumentType.NUMBER,
+							defaultValue: 1
+						},
+						ITEM: {
+							type: Scratch.ArgumentType.STRING,
+							defaultValue: "thing"
 						}
 					}
 				}
@@ -39,11 +107,47 @@ class firstClass {
 		}
 		
 		this.lists[index] = [];
-		return index
+		return index + 1
+	}
+	
+	addItem({ITEM, LIST}) {
+		var list = this.lists[LIST - 1]
+		if (list !== nil) {
+			list[list.length] = ITEM;
+		}
+	}
+	
+	delItem({INDEX, LIST}) {
+		var list = this.lists[LIST - 1];
+		if (list !== nil) {
+			list.splice(INDEX - 1, 1);
+		}
+	}
+	
+	insItem({ITEM, INDEX, LIST}) {
+		var list = this.lists[LIST - 1];
+		if (list !== nil) {
+			list.splice(INDEX - 1, 0, ITEM);
+		}
+	}
+	
+	repItem({INDEX, LIST, ITEM}) {
+		var list = this.lists[LIST - 1];
+		if (list !== nil) {
+			list[INDEX - 1] = ITEM;
+		}
+	}
+	
+	getItem({INDEX, LIST}) {
+		var list = this.lists[LIST - 1];
+		if (list !== nil) {
+			return list[INDEX - 1];
+		}
+		return "";
 	}
 	
 	delList({LIST}) {
-		this.lists[LIST] = null;
+		this.lists[LIST - 1] = null;
 	}
 }
 
