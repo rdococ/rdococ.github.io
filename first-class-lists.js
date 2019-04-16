@@ -132,7 +132,7 @@ class firstClass {
 	}
 	
 	addItem({ITEM, LIST}) {
-		var list = this.lists[LIST - 1]
+		var list = this.lists[LIST - 1];
 		if (list !== null) {
 			list[list.length] = ITEM;
 		}
