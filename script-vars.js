@@ -10,13 +10,17 @@ class scriptVars {
 
 			blocks: [
 				{
-					opcode: 'createScriptVar',
+					opcode: 'setScriptVar',
 					blockType: Scratch.BlockType.COMMAND,
-					text: 'create script var [NAME]',
+					text: 'set script var [NAME] to [VALUE]',
 					arguments: {
 						NAME: {
 							type: Scratch.ArgumentType.STRING,
 							defaultValue: 'var'
+						},
+						VALUE: {
+							type: Scratch.ArgumentType.STRING,
+							defaultValue: '0'
 						}
 					}
 				},
@@ -35,7 +39,7 @@ class scriptVars {
 		}
 	}
 	
-	createScriptVar(args, util) {
+	setScriptVar(args, util) {
 		if (typeof util.stackFrame.vars === 'undefined') {
 			util.stackFrame.vars = {};
 		}
