@@ -1,10 +1,5 @@
 class SomeBlocks {
 	constructor (runtime) {
-		/**
-		 * Store this for later communication with the Scratch VM runtime.
-		 * If this extension is running in a sandbox then `runtime` is an async proxy object.
-		 * @type {Runtime}
-		 */
 		this.runtime = runtime;
 	};
 
@@ -15,15 +10,15 @@ class SomeBlocks {
 			blocks: [
 				{
 					opcode: 'myReporter',
-					blockType: "Reporter",
+					blockType: "reporter",
 					text: 'letter [LETTER_NUM] of [TEXT]',
 					arguments: {
 						LETTER_NUM: {
-							type: "String",
+							type: "string",
 							defaultValue: '1'
 						},
 						TEXT: {
-							type: "String",
+							type: "string",
 							defaultValue: 'text'
 						}
 					}
