@@ -32,3 +32,4 @@ class SomeBlocks {
 	};
 }
 
+Scratch.extensions.register(new SomeBlocks());
