@@ -15,15 +15,15 @@ class SomeBlocks {
 			blocks: [
 				{
 					opcode: 'myReporter',
-					blockType: BlockType.REPORTER,
+					blockType: "Reporter",
 					text: 'letter [LETTER_NUM] of [TEXT]',
 					arguments: {
 						LETTER_NUM: {
-							type: ArgumentType.STRING,
+							type: "String",
 							defaultValue: '1'
 						},
 						TEXT: {
-							type: ArgumentType.STRING,
+							type: "String",
 							defaultValue: 'text'
 						}
 					}
