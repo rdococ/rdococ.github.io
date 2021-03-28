@@ -1,7 +1,6 @@
 class scriptVars {
 
 	constructor() {
-		this.vars = [];
 	}
 
 	getInfo() {
@@ -11,25 +10,47 @@ class scriptVars {
 
 			blocks: [
 				{
-					opcode: 'withVar',
-					blockType: Scratch.BlockType.LOOP,
-					text: 'with variable',
-					arguments: {}
+					opcode: 'createScriptVar',
+					blockType: Scratch.BlockType.COMMAND,
+					text: 'create script var [NAME]',
+					arguments: {
+						NAME: {
+							type: Scratch.ArgumentType.STRING,
+							defaultValue: 'var'
+						}
+					}
+				},
+				{
+					opcode: 'getScriptVar',
+					blockType: Scratch.BlockType.REPORTER,
+					text: 'script var [NAME]',
+					arguments: {
+						NAME: {
+							type: Scratch.ArgumentType.STRING,
+							defaultValue: 'var'
+						}
+					}
 				}
 			]
 		}
 	}
 	
-	
-	
-	withVar(args, util) {
-		if (typeof util.stackFrame.varUsed === 'undefined') {
-			// Create variable here
-			util.startBranch(1, true);
-			util.stackFrame.varUsed = true;
-		} else {
-			// Remove variable here
+	createScriptVar(args, util) {
+		if (typeof util.stackFrame.vars === 'undefined') {
+			util.stackFrame.vars = {};
 		}
+		util.stackFrame.vars[args[0]] = args[1];
+	}
+	
+	getScriptVar(args, util) {
+		if (typeof util.stackFrame.vars === 'undefined') {
+			return 0;
+		}
+		if (typeof util.stackFrame.vars[args[0]] === 'undefined') {
+			return 0;
+		}
+		
+		return util.stackFrame.vars[args[0]];
 	}
 }
 
