@@ -12,7 +12,7 @@ class scriptVars {
 			blocks: [
 				{
 					opcode: 'withVar',
-					blockType: Scratch.BlockType.CONDITIONAL,
+					blockType: Scratch.BlockType.LOOP,
 					text: 'with variable',
 					arguments: {}
 				}
