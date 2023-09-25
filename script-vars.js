@@ -7,36 +7,51 @@ class ScriptVars {
 
     getInfo() {
         return {
-            id: 'scriptVars',
-            name: 'Script Variables',
+            id: "scriptVars",
+            name: "Script Variables",
             
             color1: "#EB4129",
             color2: "#DE2D21",
 
             blocks: [
                 {
-                    opcode: 'setScriptVar',
+                    opcode: "setScriptVar",
                     blockType: Scratch.BlockType.COMMAND,
-                    text: 'set script var [VAR] to [VALUE]',
+                    text: "set script var [VAR] to [VALUE]",
                     arguments: {
                         VAR: {
                             type: Scratch.ArgumentType.STRING,
-                            defaultValue: 'variable'
+                            defaultValue: "variable"
                         },
                         VALUE: {
                             type: Scratch.ArgumentType.STRING,
-                            defaultValue: '0'
+                            defaultValue: "0"
                         }
                     }
                 },
                 {
-                    opcode: 'getScriptVar',
-                    blockType: Scratch.BlockType.REPORTER,
-                    text: 'script var [VAR]',
+                    opcode: "changeScriptVar",
+                    blockType: Scratch.BlockType.COMMAND,
+                    text: "change script var [VAR] by [VALUE]",
                     arguments: {
                         VAR: {
                             type: Scratch.ArgumentType.STRING,
-                            defaultValue: 'variable'
+                            defaultValue: "variable"
+                        },
+                        VALUE: {
+                            type: Scratch.ArgumentType.NUMBER,
+                            defaultValue: "1"
+                        }
+                    }
+                },
+                {
+                    opcode: "getScriptVar",
+                    blockType: Scratch.BlockType.REPORTER,
+                    text: "script var [VAR]",
+                    arguments: {
+                        VAR: {
+                            type: Scratch.ArgumentType.STRING,
+                            defaultValue: "variable"
                         }
                     }
                 },
@@ -79,6 +94,27 @@ class ScriptVars {
             thread.threadVars = {}
         }
         thread.threadVars[args.VAR] = args.VALUE;
+    }
+    
+    changeScriptVar(args, util) {
+        const thread = util.thread;
+        
+        for (let i = thread.stackFrames.length - 1; i >= 0; i--) {
+            const frame = thread.stackFrames[i];
+            if (frame.params === null) {
+                continue;
+            }
+            if (frame.scriptVars === undefined) {
+                frame.scriptVars = {};
+            }
+            frame.scriptVars[args.VAR] = Scratch.Cast.toNumber(frame.scriptVars[args.VAR]) + Scratch.Cast.toNumber(args.VALUE);
+            return;
+        }
+        
+        if (thread.threadVars === undefined) {
+            thread.threadVars = {}
+        }
+        thread.threadVars[args.VAR] = Scratch.Cast.toNumber(thread.threadVars[args.VAR]) + Scratch.Cast.toNumber(args.VALUE);
     }
     
     getScriptVar(args, util) {
