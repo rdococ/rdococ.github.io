@@ -122,18 +122,17 @@ class ScriptVars {
     }
 }
 
-Scratch.extensions.register(new ScriptVars());
-
 // credit to showierdata9978 and CST
 const extensionClass = ScriptVars;
 if (Scratch) {
     if (Scratch.extensions.unsandboxed) {
-        Scratch.extensions.register(new extensionClass(Scratch.vm));
+        Scratch.extensions.register(new extensionClass());
     } else {
-        throw new Error("Script Variables cannot run in sandboxed mode.");
+        throw new Error("Script Variables cannot run in sandboxed mode");
     } 
 } else if (globalThis.vm) {
-    // Support loading the extension "the old way"
+    throw new Error("Script Variables currently cannot run 'the old way'");
+    /* // Support loading the extension "the old way"
     // (running the code in something like the browser console
     // or E羊icques' load_plugin URL parameter)
     const extensionInstance = new extensionClass(globalThis.vm);
@@ -142,7 +141,7 @@ if (Scratch) {
     );
     globalThis.vm.extensionManager._loadedExtensions.set(
         extensionInstance.getInfo().id, serviceName
-    ); 
+    );*/ 
 } else {
-    throw new Error("Scratch not detected"); // no idea if there is anything else i can do here
+    throw new Error("Scratch not detected");
 };
