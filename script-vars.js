@@ -20,6 +20,18 @@
 
                 blocks: [
                     {
+                        opcode: "getScriptVar",
+                        blockType: "reporter",
+                        text: "script var [VAR]",
+                        arguments: {
+                            VAR: {
+                                type: "string",
+                                defaultValue: "variable"
+                            }
+                        }
+                    },
+                    "---",
+                    {
                         opcode: "setScriptVar",
                         blockType: "command",
                         text: "set script var [VAR] to [VALUE]",
@@ -46,17 +58,6 @@
                             VALUE: {
                                 type: "number",
                                 defaultValue: "1"
-                            }
-                        }
-                    },
-                    {
-                        opcode: "getScriptVar",
-                        blockType: "reporter",
-                        text: "script var [VAR]",
-                        arguments: {
-                            VAR: {
-                                type: "string",
-                                defaultValue: "variable"
                             }
                         }
                     },
@@ -90,6 +91,15 @@
             return thread.threadVars;
         }
         
+        getScriptVar(args) {
+            const value = this.findVarFrame(this.vm.runtime.sequencer.activeThread)[args.VAR];
+            if (typeof value === "undefined") {
+                return 0;
+            }
+            
+            return value;
+        }
+        
         setScriptVar(args) {
             this.findVarFrame(this.vm.runtime.sequencer.activeThread)[args.VAR] = args.VALUE;
         }
@@ -99,14 +109,6 @@
             varFrame[args.VAR] = (+varFrame[args.VAR] || 0) + (+args.VALUE || 0);
         }
         
-        getScriptVar(args) {
-            const value = this.findVarFrame(this.vm.runtime.sequencer.activeThread)[args.VAR];
-            if (typeof value === "undefined") {
-                return 0;
-            }
-            
-            return value;
-        }
     }
 
     // credit to showierdata9978 and CST
