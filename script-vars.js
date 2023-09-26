@@ -1,5 +1,6 @@
-// Requires sandboxing to be turned off!
-// To run on TurboWarp: Click 'Custom Extensions', select the 'Text' tab, copy this source code into it and make sure 'Run Extension Without Sandbox' is ON.
+// Script Variables - alternate version with better semantics, but incompatible with TurboWarp compilation.
+// To run on TurboWarp: Click 'Advanced', check 'Disable Compiler' and click 'Save Settings To Project'. Click 'Custom Extensions', select the 'Text' tab, copy this source code into it and make sure 'Run Extension Without Sandbox' is ON.
+// To run on E羊icques: Use the load_plugin URL parameter or paste the code directly into console and run.
 
 (function(Scratch) {
     'use strict';
@@ -18,13 +19,6 @@
                 color2: "#DE2D21",
 
                 blocks: [
-                    {
-                        opcode: "usingScriptVars",
-                        blockType: Scratch.BlockType.LOOP,
-                        text: "using script vars",
-                        arguments: {},
-                    },
-                    "---",
                     {
                         opcode: "setScriptVar",
                         blockType: "command",
@@ -66,88 +60,52 @@
                             }
                         }
                     },
-                    "---",
-                    {
-                        opcode: "forEachScriptVar",
-                        blockType: Scratch.BlockType.LOOP,
-                        text: "for script var [VAR] in [VALUE]",
-                        arguments: {
-                            VAR: {
-                                type: "string",
-                                defaultValue: "variable"
-                            },
-                            VALUE: {
-                                type: "number",
-                                defaultValue: "10"
-                            }
-                        },
-                    },
                 ]
             }
         }
         
-        findVarFrame(name, thread) {
-            if (typeof thread.varFrames === "undefined") {
-                thread.varFrames = [{}];
-                return thread.varFrames[0];
-            }
-            
-            /* for (let i = thread.varFrames.length - 1; i >= 0; i--) {
-                if (thread.varFrames[i][name]) {
-                    return thread.varFrames[i];
+        findVarFrame(thread) {
+            for (let i = thread.stackFrames.length - 1; i >= 0; i--) {
+                const frame = thread.stackFrames[i];
+                if (frame.params === null) {
+                    continue;
                 }
-            } */
-            return thread.varFrames[thread.varFrames.length - 1];
+                if (frame.scriptVars === undefined) {
+                    frame.scriptVars = {};
+                    
+                    if (!frame.__scriptVarsMonkeyPatch) {
+                        const oldReset = frame.reset;
+                        frame.reset = function () {
+                            delete frame.scriptVars;
+                            oldReset.call(frame);
+                        }
+                        frame.__scriptVarsMonkeyPatch = true;
+                    }
+                }
+                return frame.scriptVars;
+            }
+            if (thread.threadVars === undefined) {
+                thread.threadVars = {};
+            }
+            return thread.threadVars;
         }
         
-        setScriptVar(args, util) {
-            this.findVarFrame(args.VAR, util.thread)[args.VAR] = args.VALUE;
+        setScriptVar(args) {
+            this.findVarFrame(this.vm.runtime.sequencer.activeThread)[args.VAR] = args.VALUE;
         }
         
-        changeScriptVar(args, util) {
-            const varFrame = this.findVarFrame(args.VAR, util.thread);
-            varFrame[args.VAR] = Scratch.Cast.toNumber(varFrame[args.VAR]) + Scratch.Cast.toNumber(args.VALUE);
+        changeScriptVar(args) {
+            const varFrame = this.findVarFrame(this.vm.runtime.sequencer.activeThread);
+            varFrame[args.VAR] = (+varFrame[args.VAR] || 0) + (+args.VALUE || 0);
         }
         
-        getScriptVar(args, util) {
-            const value = this.findVarFrame(args.VAR, util.thread)[args.VAR];
+        getScriptVar(args) {
+            const value = this.findVarFrame(this.vm.runtime.sequencer.activeThread)[args.VAR];
             if (typeof value === "undefined") {
                 return 0;
             }
             
             return value;
-        }
-        
-        usingScriptVars(args, util) {
-            const thread = util.thread;
-            
-            if (typeof util.stackFrame.used === "undefined") {
-                util.stackFrame.used = true;
-                if (typeof thread.varFrames === "undefined") {
-                    thread.varFrames = [];
-                }
-                thread.varFrames.push({});
-                
-                return true;
-            } else {
-                thread.varFrames.pop();
-                if (thread.varFrames.length === 0) {
-                    delete thread.varFrames;
-                }
-            }
-        }
-        
-        forEachScriptVar(args, util) {
-            const thread = util.thread;
-            
-            if (typeof util.stackFrame.index === "undefined") {
-                util.stackFrame.index = 0;
-            }
-            if (util.stackFrame.index < Number(args.VALUE)) {
-                util.stackFrame.index++;
-                this.setScriptVar({VAR: args.VAR, VALUE: util.stackFrame.index}, util);
-                return true;
-            }
         }
     }
 
