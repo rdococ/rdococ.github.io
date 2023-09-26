@@ -15,8 +15,8 @@
                 id: "scriptVars",
                 name: "Script Variables",
                 
-                color1: "#EB4129",
-                color2: "#DE2D21",
+                color1: "#FF4D6A",
+                color2: "#FF4263",
 
                 blocks: [
                     {
