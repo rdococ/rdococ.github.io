@@ -1,16 +1,17 @@
 // Requires sandboxing to be OFF!
 // To run on TurboWarp: Click 'Custom Extensions', select the 'Text' tab, copy this source code into it and make sure 'Run Extension Without Sandbox' is ON.
+// To run on E羊icques: Use the load_plugin URL parameter or paste the code directly into console and run.
 
 (function(Scratch) {
     'use strict';
     
     class AnonymousLists {
-        constructor() {
+        constructor(vm) {
             this.resetAll();
-            Scratch.vm.runtime.on("PROJECT_START", () => {
+            vm.runtime.on("PROJECT_START", () => {
                 this.resetAll();
             });
-            Scratch.vm.runtime.on("PROJECT_STOP_ALL", () => {
+            vm.runtime.on("PROJECT_STOP_ALL", () => {
                 this.resetAll();
             });
         }
@@ -23,100 +24,100 @@
                 blocks: [
                     {
                         opcode: 'newList',
-                        blockType: Scratch.BlockType.REPORTER,
+                        blockType: "reporter",
                         text: 'a new list',
                         arguments: {}
                     },
                     {
                         opcode: 'delList',
-                        blockType: Scratch.BlockType.COMMAND,
+                        blockType: "command",
                         text: 'delete list [LIST]',
                         arguments: {
                             LIST: {
-                                type: Scratch.ArgumentType.NUMBER,
+                                type: "number",
                                 defaultValue: 1
                             }
                         }
                     },
                     {
                         opcode: 'addItem',
-                        blockType: Scratch.BlockType.COMMAND,
+                        blockType: "command",
                         text: 'add [ITEM] to [LIST]',
                         arguments: {
                             ITEM: {
-                                type: Scratch.ArgumentType.STRING,
+                                type: "string",
                                 defaultValue: "thing"
                             },
                             LIST: {
-                                type: Scratch.ArgumentType.NUMBER,
+                                type: "number",
                                 defaultValue: 1
                             }
                         }
                     },
                     {
                         opcode: 'delItem',
-                        blockType: Scratch.BlockType.COMMAND,
+                        blockType: "command",
                         text: 'delete [INDEX] of [LIST]',
                         arguments: {
                             INDEX: {
-                                type: Scratch.ArgumentType.NUMBER,
+                                type: "number",
                                 defaultValue: 1
                             },
                             LIST: {
-                                type: Scratch.ArgumentType.NUMBER,
+                                type: "number",
                                 defaultValue: 1
                             }
                         }
                     },
                     {
                         opcode: 'insItem',
-                        blockType: Scratch.BlockType.COMMAND,
+                        blockType: "command",
                         text: 'insert [ITEM] at [INDEX] of [LIST]',
                         arguments: {
                             ITEM: {
-                                type: Scratch.ArgumentType.STRING,
+                                type: "string",
                                 defaultValue: "thing"
                             },
                             INDEX: {
-                                type: Scratch.ArgumentType.NUMBER,
+                                type: "number",
                                 defaultValue: 1
                             },
                             LIST: {
-                                type: Scratch.ArgumentType.NUMBER,
+                                type: "number",
                                 defaultValue: 1
                             }
                         }
                     },
                     {
                         opcode: 'repItem',
-                        blockType: Scratch.BlockType.COMMAND,
+                        blockType: "command",
                         text: 'replace [INDEX] of [LIST] with [ITEM]',
                         arguments: {
                             INDEX: {
-                                type: Scratch.ArgumentType.NUMBER,
+                                type: "number",
                                 defaultValue: 1
                             },
                             LIST: {
-                                type: Scratch.ArgumentType.NUMBER,
+                                type: "number",
                                 defaultValue: 1
                             },
                             ITEM: {
-                                type: Scratch.ArgumentType.STRING,
+                                type: "string",
                                 defaultValue: "thing"
                             }
                         }
                     },
                     {
                         opcode: 'getItem',
-                        blockType: Scratch.BlockType.REPORTER,
+                        blockType: "reporter",
                         text: 'item [INDEX] of [LIST]',
                         arguments: {
                             INDEX: {
-                                type: Scratch.ArgumentType.NUMBER,
+                                type: "number",
                                 defaultValue: 1
                             },
                             LIST: {
-                                type: Scratch.ArgumentType.NUMBER,
+                                type: "number",
                                 defaultValue: 1
                             }
                         }
