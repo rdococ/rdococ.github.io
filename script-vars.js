@@ -1,8 +1,9 @@
 // Requires sandboxing and compilation to both be OFF!
-// To run on TurboWarp: Click 'Advanced' and check 'Disable Compiler'. Click 'Custom Extensions', select the 'Text' tab, copy this source code into it and make sure 'Run Extension Without Sandbox' is ON.
+// To run on TurboWarp: Click 'Advanced', check 'Disable Compiler' and click 'Save Settings To Project'. Click 'Custom Extensions', select the 'Text' tab, copy this source code into it and make sure 'Run Extension Without Sandbox' is ON.
 
 class ScriptVars {
-    constructor() {
+    constructor(vm) {
+        this.vm = vm;
     }
 
     getInfo() {
@@ -16,67 +17,67 @@ class ScriptVars {
             blocks: [
                 {
                     opcode: "setScriptVar",
-                    blockType: Scratch.BlockType.COMMAND,
+                    blockType: "command",
                     text: "set script var [VAR] to [VALUE]",
                     arguments: {
                         VAR: {
-                            type: Scratch.ArgumentType.STRING,
+                            type: "string",
                             defaultValue: "variable"
                         },
                         VALUE: {
-                            type: Scratch.ArgumentType.STRING,
+                            type: "string",
                             defaultValue: "0"
                         }
                     }
                 },
                 {
                     opcode: "changeScriptVar",
-                    blockType: Scratch.BlockType.COMMAND,
+                    blockType: "command",
                     text: "change script var [VAR] by [VALUE]",
                     arguments: {
                         VAR: {
-                            type: Scratch.ArgumentType.STRING,
+                            type: "string",
                             defaultValue: "variable"
                         },
                         VALUE: {
-                            type: Scratch.ArgumentType.NUMBER,
+                            type: "number",
                             defaultValue: "1"
                         }
                     }
                 },
                 {
                     opcode: "getScriptVar",
-                    blockType: Scratch.BlockType.REPORTER,
+                    blockType: "reporter",
                     text: "script var [VAR]",
                     arguments: {
                         VAR: {
-                            type: Scratch.ArgumentType.STRING,
+                            type: "string",
                             defaultValue: "variable"
                         }
                     }
-                },
-                "---",
+                }
+                /* "---",
                 {
                     opcode: "forEachScriptVar",
                     blockType: Scratch.BlockType.LOOP,
                     text: "for each [VAR] in [NUM]",
                     arguments: {
                         VAR: {
-                            type: Scratch.ArgumentType.STRING,
+                            type: "string",
                             defaultValue: "variable",
                         },
                         NUM: {
-                            type: Scratch.ArgumentType.NUMBER,
+                            type: "number",
                             defaultValue: "10",
                         },
                     },
-                },
+                }, */
             ]
         }
     }
     
-    setScriptVar(args, util) {
-        const thread = util.thread;
+    setScriptVar(args) {
+        const thread = vm.runtime.sequencer.activeThread;
         
         for (let i = thread.stackFrames.length - 1; i >= 0; i--) {
             const frame = thread.stackFrames[i];
@@ -96,8 +97,8 @@ class ScriptVars {
         thread.threadVars[args.VAR] = args.VALUE;
     }
     
-    changeScriptVar(args, util) {
-        const thread = util.thread;
+    changeScriptVar(args) {
+        const thread = vm.runtime.sequencer.activeThread;
         
         for (let i = thread.stackFrames.length - 1; i >= 0; i--) {
             const frame = thread.stackFrames[i];
@@ -107,18 +108,18 @@ class ScriptVars {
             if (frame.scriptVars === undefined) {
                 frame.scriptVars = {};
             }
-            frame.scriptVars[args.VAR] = Scratch.Cast.toNumber(frame.scriptVars[args.VAR]) + Scratch.Cast.toNumber(args.VALUE);
+            frame.scriptVars[args.VAR] = (+frame.scriptVars[args.VAR] || 0) + (+args.VALUE || 0);
             return;
         }
         
         if (thread.threadVars === undefined) {
             thread.threadVars = {}
         }
-        thread.threadVars[args.VAR] = Scratch.Cast.toNumber(thread.threadVars[args.VAR]) + Scratch.Cast.toNumber(args.VALUE);
+        thread.threadVars[args.VAR] = (+thread.threadVars[args.VAR] || 0) + (+args.VALUE || 0);
     }
     
-    getScriptVar(args, util) {
-        const thread = util.thread;
+    getScriptVar(args) {
+        const thread = vm.runtime.sequencer.activeThread;
         var param = null;
         
         for (let i = thread.stackFrames.length - 1; i >= 0; i--) {
@@ -144,31 +145,30 @@ class ScriptVars {
         return param;
     }
     
-    forEachScriptVar(args, util) {
-        const thread = util.thread;
+    /* forEachScriptVar(args) {
+        const thread = vm.runtime.sequencer.activeThread;
         
         if (typeof util.stackFrame.index === "undefined") {
             util.stackFrame.index = 0;
         }
         if (util.stackFrame.index < Number(args.NUM)) {
             util.stackFrame.index++;
-            this.setScriptVar({VAR: args.VAR, VALUE: util.stackFrame.index}, util);
+            this.setScriptVar({VAR: args.VAR, VALUE: util.stackFrame.index});
             return true;
         }
-    }
+    } */
 }
 
 // credit to showierdata9978 and CST
 const extensionClass = ScriptVars;
-if (Scratch) {
+if (Scratch && Scratch.extensions) {
     if (Scratch.extensions.unsandboxed) {
-        Scratch.extensions.register(new extensionClass());
+        Scratch.extensions.register(new extensionClass(Scratch.vm));
     } else {
         throw new Error("Script Variables cannot run in sandboxed mode");
     } 
 } else if (globalThis.vm) {
-    throw new Error("Script Variables currently cannot run 'the old way'");
-    /* // Support loading the extension "the old way"
+    // Support loading the extension "the old way"
     // (running the code in something like the browser console
     // or E羊icques' load_plugin URL parameter)
     const extensionInstance = new extensionClass(globalThis.vm);
@@ -177,7 +177,7 @@ if (Scratch) {
     );
     globalThis.vm.extensionManager._loadedExtensions.set(
         extensionInstance.getInfo().id, serviceName
-    );*/ 
+    );
 } else {
     throw new Error("Scratch not detected");
 };
