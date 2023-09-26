@@ -77,7 +77,7 @@ class ScriptVars {
     }
     
     setScriptVar(args) {
-        const thread = vm.runtime.sequencer.activeThread;
+        const thread = this.vm.runtime.sequencer.activeThread;
         
         for (let i = thread.stackFrames.length - 1; i >= 0; i--) {
             const frame = thread.stackFrames[i];
@@ -98,7 +98,7 @@ class ScriptVars {
     }
     
     changeScriptVar(args) {
-        const thread = vm.runtime.sequencer.activeThread;
+        const thread = this.vm.runtime.sequencer.activeThread;
         
         for (let i = thread.stackFrames.length - 1; i >= 0; i--) {
             const frame = thread.stackFrames[i];
@@ -119,7 +119,7 @@ class ScriptVars {
     }
     
     getScriptVar(args) {
-        const thread = vm.runtime.sequencer.activeThread;
+        const thread = this.vm.runtime.sequencer.activeThread;
         var param = null;
         
         for (let i = thread.stackFrames.length - 1; i >= 0; i--) {
@@ -146,7 +146,7 @@ class ScriptVars {
     }
     
     /* forEachScriptVar(args) {
-        const thread = vm.runtime.sequencer.activeThread;
+        const thread = this.vm.runtime.sequencer.activeThread;
         
         if (typeof util.stackFrame.index === "undefined") {
             util.stackFrame.index = 0;
