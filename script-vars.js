@@ -72,7 +72,7 @@
                     continue;
                 }
                 if (frame.scriptVars === undefined) {
-                    frame.scriptVars = {};
+                    frame.scriptVars = Object.create(null);
                     
                     if (!frame.__scriptVarsMonkeyPatch) {
                         const oldReset = frame.reset;
@@ -86,7 +86,7 @@
                 return frame.scriptVars;
             }
             if (thread.threadVars === undefined) {
-                thread.threadVars = {};
+                thread.threadVars = Object.create(null);
             }
             return thread.threadVars;
         }
