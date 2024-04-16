@@ -1,8 +1,31 @@
-// Script Variables - alternate version with better semantics, but incompatible with TurboWarp compilation.
+// Script Variables
 // To run on TurboWarp: Click 'Advanced', check 'Disable Compiler' and click 'Save Settings To Project'. Click 'Custom Extensions', select the 'Text' tab, copy this source code into it and make sure 'Run Extension Without Sandbox' is ON.
 // To run on E羊icques: Use the load_plugin URL parameter or paste the code directly into console and run.
+// To run on Scratch: Run this code in the browser console, or make a bookmark with this link: 'javascript:fetch('https://rdococ.github.io/script-vars.js').then(r=>r.text()).then(t=>eval(t))'
 
-(function(Scratch) {
+// Credit to LoganAbel for bookmark adaptation
+function findReactComponent(element) {
+    let fiber = element[Object.keys(element).find(key => key.startsWith("__reactInternalInstance$"))];
+    if (fiber == null) return null;
+
+    const go = fiber => {
+        let parent = fiber.return;
+        while (typeof parent.type == "string") {
+            parent = parent.return;
+        }
+        return parent;
+    };
+    fiber = go(fiber);
+    while(fiber.stateNode == null) {
+        fiber = go(fiber);
+    }
+    return fiber.stateNode;
+}
+if (!window.vm) {
+    window.vm = findReactComponent(document.getElementsByClassName("stage-header_stage-size-row_14N65")[0]).props.vm;
+}
+
+(function() {
     'use strict';
     
     class ScriptVars {
@@ -111,7 +134,7 @@
         
     }
 
-    // credit to showierdata9978 and CST
+    // Credit to showierdata9978 and CST
     const extensionClass = ScriptVars;
     if (globalThis.vm) {
         // Support loading the extension "the old way"
@@ -133,4 +156,4 @@
     } else {
         throw new Error("Scratch not detected");
     };
-})(Scratch)
+})()
