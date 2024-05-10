@@ -131,25 +131,11 @@ class ScriptVars {
     
 }
 
-// Credit to showierdata9978 and CST
-const extensionClass = ScriptVars;
-if (globalThis.vm) {
-    // Support loading the extension "the old way"
-    // (running the code in something like the browser console
-    // or E羊icques' load_plugin URL parameter)
-    const extensionInstance = new extensionClass(globalThis.vm);
-    const serviceName = globalThis.vm.extensionManager._registerInternalExtension(
-        extensionInstance
-    );
-    globalThis.vm.extensionManager._loadedExtensions.set(
-        extensionInstance.getInfo().id, serviceName
-    );
-} else if (Scratch && Scratch.extensions) {
-    if (Scratch.extensions.unsandboxed) {
-        Scratch.extensions.register(new extensionClass(Scratch.vm));
-    } else {
-        throw new Error("Script Variables cannot run in sandboxed mode");
-    } 
-} else {
-    throw new Error("Scratch not detected");
-};
+
+window.vm = findReactComponent(document.getElementsByClassName("stage-header_stage-size-row_14N65")[0]).props.vm;
+
+(function() {
+    var extensionInstance = new ScratchMath(window.vm.extensionManager.runtime)
+    var serviceName = window.vm.extensionManager._registerInternalExtension(extensionInstance)
+    window.vm.extensionManager._loadedExtensions.set(extensionInstance.getInfo().id, serviceName)
+})()
